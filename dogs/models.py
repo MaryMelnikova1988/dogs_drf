@@ -23,8 +23,9 @@ class Dog(models.Model):
     breed = models.ForeignKey('dogs.Breed', on_delete=models.CASCADE, **NULLABLE, verbose_name='Порода собаки')
     photo = models.ImageField(upload_to='dog_photo/', **NULLABLE, verbose_name='Фото')
     date_born = models.DateField(**NULLABLE, verbose_name='Дата рождения')
-    # owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-    #                           on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
+    is_public = models.BooleanField(default=False)
 
 
     def __str__(self):
