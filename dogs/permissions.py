@@ -11,6 +11,10 @@ class IsModerator(BasePermission):
             return True
         return False
 
+    # решение с лайва / группа создавалась через админку/
+    # def has_permission(self, request, view):
+    #     return request.user.groups.filter(name='moderator').exists()
+
 
 class IsDogOwner(BasePermission):
     message = "Вы не являетесь владельцем"
@@ -19,6 +23,12 @@ class IsDogOwner(BasePermission):
         if request.user == obj.owner:
             return True
         return False
+
+        # решение с лайва
+        # def has_object_permission(self, request, view, obj):
+        #     if request.user == obj.user:
+        #         return request.method in ['GET', 'PUT', 'PATCH', 'DELETE']
+        #     return False
 
 
 class IsDogPublic(BasePermission):

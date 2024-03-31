@@ -8,6 +8,9 @@ NULLABLE = {'blank': True, 'null': True}
 class Breed(models.Model):
     name = models.CharField(max_length=100, verbose_name='Порода')
     description = models.TextField(**NULLABLE, verbose_name='Описание')
+    # с лайва
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
 
     def __str__(self):
         return f'{self.name}'
