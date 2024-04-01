@@ -18,8 +18,8 @@ class DogListView(generics.ListAPIView):
     serializer_class = DogListSerializer
     # serializer_class = DogSerializer
     queryset = Dog.objects.all()
-    # permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
     pagination_class = DogPaginator
 
 
