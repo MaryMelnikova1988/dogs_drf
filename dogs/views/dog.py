@@ -26,14 +26,15 @@ class DogListView(generics.ListAPIView):
 
 class DogCreateView(generics.CreateAPIView):
     serializer_class = DogSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     # с лайва сохранение хозяина собаки, у нас только права владельца по урокам...
     # но в лайве собака была создана в Viewsetах - и этот метод шел к нему.
     # способ на заметку
-    def perform_create(self, serializer):
-        new_dog = serializer.save(owner=self.request.user)
-        new_dog.save()
+    # def perform_create(self, serializer):
+    #     new_dog = serializer.save(owner=self.request.user)
+    #     new_dog.save()
 
     # решение с лайва # способ на заметку
     # это решение только на группу модераторов
