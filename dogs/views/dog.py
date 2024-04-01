@@ -1,7 +1,8 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from dogs.models import Dog
+from dogs.paginators import DogPaginator
 from dogs.permissions import IsModerator, IsDogOwner
 from dogs.serializers.dog import DogSerializer, DogListSerializer, DogDetailSerializer
 
@@ -17,7 +18,10 @@ class DogListView(generics.ListAPIView):
     serializer_class = DogListSerializer
     # serializer_class = DogSerializer
     queryset = Dog.objects.all()
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+    pagination_class = DogPaginator
+
 
 
 class DogCreateView(generics.CreateAPIView):
