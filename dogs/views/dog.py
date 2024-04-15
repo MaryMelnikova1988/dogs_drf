@@ -1,10 +1,31 @@
 from rest_framework import generics
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from dogs.models import Dog
 from dogs.paginators import DogPaginator
 from dogs.permissions import IsModerator, IsDogOwner
 from dogs.serializers.dog import DogSerializer, DogListSerializer, DogDetailSerializer
+from dogs.tasks import send_message_about_like
+
+
+class SetLikeToDog(APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def post(self,request):
+        dog = get_object_or_404 (Dog, pk=request.data.get('dog'))
+        user = self.request.user
+
+        if not Dog.objects.filter(likes=user).exists():
+            dog.likes.add(user)
+            message = f'{user.username} {user.email} поставил лайк {dog.name}'
+            send_message_about_like.delay(message, user.email, user.telegram)
+        else:
+            dog.likes.remove(user)
+            message = f'{user.username} {user.email} удалил лайк {dog.name}'
+        return Response({'message': message})
 
 
 class DogDetailView(generics.RetrieveAPIView):
@@ -21,7 +42,6 @@ class DogListView(generics.ListAPIView):
     # permission_classes = [IsAuthenticated]
     permission_classes = [AllowAny]
     pagination_class = DogPaginator
-
 
 
 class DogCreateView(generics.CreateAPIView):
@@ -55,8 +75,6 @@ class DogCreateView(generics.CreateAPIView):
     #     elif self.action == 'destroy':
     #         self.permission_classes = [IsAuthenticated, IsDogOwner]
     #     return super().get_permissions()
-
-
 
 
 class DogUpdateView(generics.UpdateAPIView):

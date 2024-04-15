@@ -11,3 +11,4 @@ class UserRoles(models.TextChoices):
 class User(AbstractUser):
     age = models.PositiveIntegerField(null=True, blank=True)
     roles = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER)
+    telegram = models.CharField(max_length=150, null=True, blank=True, verbose_name='chat_id telegram')

@@ -28,6 +28,8 @@ class Dog(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
     is_public = models.BooleanField(default=False)
+    # с лайва celery
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_likes', null=True, blank=True)
 
     def __str__(self):
         return f'{self.name}, {self.breed}'
