@@ -34,7 +34,7 @@ def send_birthday_mail():
         date_born__month=datetime.datetime.now().month,
     )
     for dog in dog_list:
-        if dog.owner.username:
+        if dog.owner.telegram:
             URL = 'https://api.telegram.org/bot'
             TOKEN = settings.TELEGRAM_TOKEN
             message=f'поздравляем Вас, {dog.owner.username} c рождением {dog.name}, {datetime.datetime.now()}!'
